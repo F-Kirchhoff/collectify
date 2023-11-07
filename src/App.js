@@ -1,13 +1,16 @@
 import "./App.css";
+import AlbumCard from "./components/AlbumCard";
 import { data } from "./db";
 
 function App() {
   return (
-    <main>
-      <h1>Collectify</h1>;
-      <ul>
+    <main class="main">
+      <h1>Collectify</h1>
+      <ul className="album-list">
         {data.map((album) => (
-          <li>{album.title}</li>
+          <li key={album.id}>
+            <AlbumCard {...album} />
+          </li>
         ))}
       </ul>
     </main>
