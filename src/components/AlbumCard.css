@@ -12,6 +12,7 @@
 }
 
 .album-card__info {
+  width: 100%;
   aspect-ratio: 1 / 1;
   position: relative;
   display: flex;
@@ -23,27 +24,9 @@
   padding: 1rem;
   background: linear-gradient(to top, black, transparent);
   color: white;
+  border: none;
 }
 
 .album-card__info h2 {
   margin: 0;
-}
-
-.album-card__songlist {
-  display: flex;
-  flex-direction: column;
-  background-color: #333;
-  color: white;
-  padding-block: 0.5rem;
-}
-
-.album-card__song {
-  padding: 0.25rem 1rem;
-  display: grid;
-  grid-template-columns: 32px 1fr auto;
-  gap: 0.25rem;
-}
-
-.album-card__song:hover {
-  background-color: hsl(0deg 0% 100% / 0.07);
 }
