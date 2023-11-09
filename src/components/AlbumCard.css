@@ -22,7 +22,7 @@
   gap: 0.5rem;
   align-items: end;
   padding: 1rem;
-  background: linear-gradient(to top, black, transparent);
+  background: linear-gradient(to top, #333, transparent);
   color: white;
   border: none;
 }
