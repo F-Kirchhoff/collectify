@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./AlbumCard.css";
 import SongList from "./SongList";
 
-export default function AlbumCard({ title, artist, image }) {
+export default function AlbumCard({ title, artist, image, tracks }) {
   const [showSonglist, setShowSonglist] = useState(false);
   return (
     <section className="album-card">
@@ -14,7 +14,7 @@ export default function AlbumCard({ title, artist, image }) {
         <h2>{title}</h2>
         <small>{artist}</small>
       </button>
-      {showSonglist && <SongList />}
+      {showSonglist && <SongList songs={tracks} />}
     </section>
   );
 }

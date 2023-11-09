@@ -1,17 +1,15 @@
 import "./SongList.css";
 
-export default function SongList() {
+export default function SongList({ songs }) {
   return (
     <ul className="songlist">
-      {Array(10)
-        .fill({ name: "test" })
-        .map((song, index) => (
-          <li key={song.name} className="songlist__song">
-            <span>{index + 1}.</span>
-            <span>{song.name}</span>
-            <span>03:55</span>
-          </li>
-        ))}
+      {songs.map((song) => (
+        <li key={song.id} className="songlist__song">
+          <span>{song.track_number}.</span>
+          <span>{song.name}</span>
+          <span>{song.duration}</span>
+        </li>
+      ))}
     </ul>
   );
 }
