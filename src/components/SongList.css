@@ -9,8 +9,12 @@
 .songlist__song {
   padding: 0.4rem 1rem;
   display: grid;
-  grid-template-columns: 32px 1fr auto;
-  gap: 0.25rem;
+  grid-template-columns: 24px 1fr auto;
+  gap: 0.5rem;
+}
+
+.songlist__song span:first-child {
+  text-align: right;
 }
 
 .songlist__song:hover {
