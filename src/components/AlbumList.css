@@ -1,0 +1,17 @@
+.album-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.album-list__loading-info {
+  display: block;
+  text-align: center;
+  color: hsl(0 0% 0% / 0.5);
+  padding-block: 3rem;
+}
+
+.album-list__title {
+  border-bottom: 1px solid black;
+  padding-block: 0.5rem;
+}

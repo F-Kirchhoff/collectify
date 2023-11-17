@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import AlbumCard from "./components/AlbumCard";
-import { data } from "./db";
+import AlbumList from "./components/AlbumList";
 
 function App() {
   const [albums, setAlbums] = useState([]);
@@ -22,13 +21,7 @@ function App() {
   return (
     <main class="main">
       <h1>Collectify</h1>
-      <ul className="album-list">
-        {albums.map((album) => (
-          <li key={album.id}>
-            <AlbumCard {...album} />
-          </li>
-        ))}
-      </ul>
+      <AlbumList list={albums} />
     </main>
   );
 }
