@@ -3,13 +3,17 @@ import "./App.css";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Navigation from "./components/Navigation";
+import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   console.clear();
 
   const [currentPage, setCurrentPage] = useState("HOME");
   const [albumData, setAlbumData] = useState([]);
-  const [savedAlbumData, setSavedAlbumData] = useState([]);
+  const [savedAlbumData, setSavedAlbumData] = useLocalStorageState(
+    "saved-albums",
+    { defaultValue: [] }
+  );
   const [query, setQuery] = useState("");
 
   const albums = albumData.map((album) => {
