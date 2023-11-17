@@ -6,7 +6,7 @@ export default function AlbumList({ list, title, onToggleSave }) {
     return (
       <>
         <h2>{title}</h2>
-        <small className="album-list__loading-info">Loading Albums ...</small>
+        <small className="album-list__loading-info">no albums found</small>
       </>
     );
   }
