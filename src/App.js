@@ -22,7 +22,7 @@ function App() {
   async function fetchAlbums(query) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/search?query=artist:${query}`
+        `http://localhost:3000/api/search?artist=${query}`
       );
       const albums = await response.json();
       setAlbums(albums);
