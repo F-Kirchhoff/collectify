@@ -1,11 +1,7 @@
 import AlbumList from "../components/AlbumList";
 
-export default function Favorites({ albums, handleToggleSave }) {
+export default function Favorites({ albums, onToggleSave }) {
   return (
-    <AlbumList
-      list={albums}
-      title="Saved Albums"
-      onToggleSave={handleToggleSave}
-    />
+    <AlbumList list={albums} title="Saved Albums" onToggleSave={onToggleSave} />
   );
 }

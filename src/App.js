@@ -60,21 +60,23 @@ function App() {
   }
 
   return (
-    <main className="main">
+    <>
       <h1>Collectify</h1>
-      {currentPage === "HOME" && (
-        <Home
-          albums={albums}
-          query={query}
-          onToggleSave={handleToggleSave}
-          onSearch={handleSearch}
-        />
-      )}
-      {currentPage === "FAVORITES" && (
-        <Favorites albums={savedAlbums} onToggleSave={handleToggleSave} />
-      )}
+      <main className="main">
+        {currentPage === "HOME" && (
+          <Home
+            albums={albums}
+            query={query}
+            onToggleSave={handleToggleSave}
+            onSearch={handleSearch}
+          />
+        )}
+        {currentPage === "FAVORITES" && (
+          <Favorites albums={savedAlbums} onToggleSave={handleToggleSave} />
+        )}
+      </main>
       <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-    </main>
+    </>
   );
 }
 
