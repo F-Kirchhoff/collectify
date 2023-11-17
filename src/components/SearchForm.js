@@ -13,15 +13,15 @@ export default function SearchForm({ onSubmit }) {
     event.target.reset();
   }
   return (
-    <form onSubmit={handleSubmit} class="search-form">
+    <form onSubmit={handleSubmit} className="search-form">
       <input
-        class="search-form__input"
+        className="search-form__input"
         type="text"
         name="query"
         placeholder="Search for artists"
         aria-label="Search for artists"
       />
-      <button type="submit" class="button">
+      <button type="submit" className="button">
         Find Albums
       </button>
     </form>

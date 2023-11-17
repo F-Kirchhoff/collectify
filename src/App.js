@@ -4,48 +4,37 @@ import AlbumList from "./components/AlbumList";
 import SearchForm from "./components/SearchForm";
 
 function App() {
-  const [albums, setAlbums] = useState([]);
-  const [savedAlbums, setSavedAlbums] = useState([]);
+  const [albumData, setAlbumData] = useState([]);
+  const [savedAlbumData, setSavedAlbumData] = useState([]);
   const [query, setQuery] = useState("");
 
+  const albums = albumData.map((album) => {
+    const isSaved = savedAlbumData.some(
+      (savedAlbum) => savedAlbum.id === album.id
+    );
+    return {
+      ...album,
+      isSaved,
+    };
+  });
+
+  const savedAlbums = savedAlbumData.map((album) => {
+    return {
+      ...album,
+      isSaved: true,
+    };
+  });
+
   useEffect(() => {
-    fetchAlbums("");
+    fetchAlbums("http://localhost:3000/api/featured");
   }, []);
 
-  useEffect(() => {
-    const albumsWithSavedState = albums.map((album) => {
-      const isSaved = savedAlbums.some(
-        (savedAlbum) => savedAlbum.id === album.id
-      );
-      return {
-        ...album,
-        isSaved,
-      };
-    });
-
-    setAlbums(albumsWithSavedState);
-  }, [savedAlbums]);
-
-  async function fetchAlbums(query) {
-    const url =
-      query === ""
-        ? "http://localhost:3000/api/featured"
-        : `http://localhost:3000/api/search?artist=${query}`;
+  async function fetchAlbums(url) {
     try {
       const response = await fetch(url);
       const albums = await response.json();
 
-      const albumsWithSavedState = albums.map((album) => {
-        const isSaved = savedAlbums.some(
-          (savedAlbum) => savedAlbum.id === album.id
-        );
-        return {
-          ...album,
-          isSaved,
-        };
-      });
-
-      setAlbums(albumsWithSavedState);
+      setAlbumData(albums);
       setQuery(query);
     } catch (error) {
       console.error(error);
@@ -54,18 +43,22 @@ function App() {
 
   function handleToggleSave(album) {
     if (album.isSaved) {
-      setSavedAlbums(
-        savedAlbums.filter((savedAlbum) => savedAlbum.id !== album.id)
+      setSavedAlbumData(
+        savedAlbumData.filter((savedAlbum) => savedAlbum.id !== album.id)
       );
     } else {
-      setSavedAlbums([{ ...album, isSaved: true }, ...savedAlbums]);
+      setSavedAlbumData([album, ...savedAlbumData]);
     }
   }
 
   return (
-    <main class="main">
+    <main className="main">
       <h1>Collectify</h1>
-      <SearchForm onSubmit={fetchAlbums} />
+      <SearchForm
+        onSubmit={(query) =>
+          fetchAlbums(`http://localhost:3000/api/search?artist=${query}`)
+        }
+      />
       <AlbumList
         list={albums}
         title={query === "" ? "Featured" : `Results for: ${query}`}
