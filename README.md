@@ -20,8 +20,8 @@ User Stories
 - [x] Display list of songs for each Album (toggle detail view)
 - [x] fetch "featured" list of albums from proxy api
 - [x] add search form for albums provided by proxy api
-- [ ] create favorite list of albums and use localstorage
-- [ ] add navigation with 2 views: search and saved albums
+- [x] create favorite list of albums and use localstorage
+- [x] add navigation with 2 views: search and saved albums
 - [ ] Advanced: Add "more" button / lazy loading in search page
 - [ ] Advanced: create one playlist "favorite songs" and new view + new navigation item + "add to favorite songs" button in songlist
 - [ ] Advanced: create playlist and let user choose to add songs into different playlist with the "add song" button
