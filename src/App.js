@@ -30,19 +30,10 @@ function App() {
     <main class="main">
       <h1>Collectify</h1>
       <SearchForm onSubmit={fetchAlbums} />
-      {query === "" ? (
-        <AlbumList list={albums} title={"Featured"} />
-      ) : (
-        <>
-          <button
-            className="button button--secondary"
-            onClick={() => fetchAlbums("")}
-          >
-            Show Featured Albums
-          </button>
-          <AlbumList list={albums} title={`Results for: ${query}`} />
-        </>
-      )}
+      <AlbumList
+        list={albums}
+        title={query === "" ? "Featured" : `Results for: ${query}`}
+      />
     </main>
   );
 }
