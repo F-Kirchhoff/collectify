@@ -1,7 +1,9 @@
 .album-card {
+  position: relative;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
 }
 
 .album-card__image {
@@ -14,7 +16,6 @@
 .album-card__info {
   width: 100%;
   aspect-ratio: 1 / 1;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -29,4 +30,16 @@
 
 .album-card__info h2 {
   margin: 0;
+}
+
+.album-card__save-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #ccc;
+  font-size: 1rem;
+}
+
+.album-card__save-button--saved {
+  background-color: hsl(30deg 50% 50%);
 }
