@@ -27,7 +27,7 @@ function App() {
   }
 
   return (
-    <main class="main">
+    <main className="main">
       <h1>Collectify</h1>
       <SearchForm onSubmit={fetchAlbums} />
       <AlbumList
