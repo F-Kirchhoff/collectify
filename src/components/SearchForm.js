@@ -21,7 +21,7 @@ export default function SearchForm({ onSubmit }) {
         placeholder="Search for artists"
         aria-label="Search for artists"
       />
-      <button type="submit" class="search-form__button">
+      <button type="submit" class="button">
         Find Albums
       </button>
     </form>

@@ -1,11 +1,11 @@
 import "./AlbumList.css";
 import AlbumCard from "./AlbumCard";
 
-export default function AlbumList({ list }) {
+export default function AlbumList({ list, title }) {
   if (list.length === 0) {
     return (
       <>
-        <h2>Featured</h2>
+        <h2>{title}</h2>
         <small className="album-list__loading-info">Loading Albums ...</small>
       </>
     );
@@ -13,7 +13,7 @@ export default function AlbumList({ list }) {
 
   return (
     <>
-      <h2 className="album-list__title">Featured</h2>
+      <h2 className="album-list__title">{title}</h2>
       <ul className="album-list">
         {list.map((album) => (
           <li key={album.id}>
