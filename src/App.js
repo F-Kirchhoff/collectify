@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import AlbumCard from "./components/AlbumCard";
+import AlbumList from "./components/AlbumList";
 import SearchForm from "./components/SearchForm";
 
 function App() {
@@ -35,13 +35,7 @@ function App() {
     <main class="main">
       <h1>Collectify</h1>
       <SearchForm onSubmit={fetchAlbums} />
-      <ul className="album-list">
-        {albums.map((album) => (
-          <li key={album.id}>
-            <AlbumCard {...album} />
-          </li>
-        ))}
-      </ul>
+      <AlbumList list={albums} />
     </main>
   );
 }
