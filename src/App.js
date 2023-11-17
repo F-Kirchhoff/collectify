@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import AlbumList from "./components/AlbumList";
-import SearchForm from "./components/SearchForm";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
+import Navigation from "./components/Navigation";
 
 function App() {
+  console.clear();
+
+  const [currentPage, setCurrentPage] = useState("HOME");
   const [albumData, setAlbumData] = useState([]);
   const [savedAlbumData, setSavedAlbumData] = useState([]);
   const [query, setQuery] = useState("");
@@ -51,24 +55,25 @@ function App() {
     }
   }
 
+  function handleSearch(query) {
+    fetchAlbums(`http://localhost:3000/api/search?artist=${query}`);
+  }
+
   return (
     <main className="main">
       <h1>Collectify</h1>
-      <SearchForm
-        onSubmit={(query) =>
-          fetchAlbums(`http://localhost:3000/api/search?artist=${query}`)
-        }
-      />
-      <AlbumList
-        list={albums}
-        title={query === "" ? "Featured" : `Results for: ${query}`}
-        onToggleSave={handleToggleSave}
-      />
-      <AlbumList
-        list={savedAlbums}
-        title="Saved Albums"
-        onToggleSave={handleToggleSave}
-      />
+      {currentPage === "HOME" && (
+        <Home
+          albums={albums}
+          query={query}
+          onToggleSave={handleToggleSave}
+          onSearch={handleSearch}
+        />
+      )}
+      {currentPage === "FAVORITES" && (
+        <Favorites albums={savedAlbums} onToggleSave={handleToggleSave} />
+      )}
+      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </main>
   );
 }
