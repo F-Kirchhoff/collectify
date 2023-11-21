@@ -9,6 +9,8 @@ function App() {
   const [savedAlbumIds, setSavedAlbumData] = useState([]);
   const [query, setQuery] = useState("");
 
+  console.log({ savedAlbumIds });
+
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
   }, []);
@@ -47,6 +49,7 @@ function App() {
         onToggleSave={handleToggleSave}
         savedAlbumIds={savedAlbumIds}
       />
+      <h2>Favorites</h2>
       {savedAlbumIds.map((id) => (
         <FavoriteCard
           key={id}

@@ -10,7 +10,7 @@ export default function AlbumList({
   if (list.length === 0) {
     return (
       <>
-        <h2>{title}</h2>
+        <h2 className="album-list__title">{title}</h2>
         <small className="album-list__loading-info">no albums found</small>
       </>
     );
@@ -24,7 +24,7 @@ export default function AlbumList({
           <li key={album.id}>
             <AlbumCard
               {...album}
-              onToggleSave={() => onToggleSave(album)}
+              onToggleSave={() => onToggleSave(album.id)}
               isSaved={savedAlbumIds.includes(album.id)}
             />
           </li>

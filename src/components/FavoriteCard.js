@@ -7,7 +7,7 @@ export default function FavoriteCard({ albumId, onToggleSave }) {
   useEffect(() => {
     async function fetchAlbum() {
       const response = await fetch(
-        `http://localhost:3000/api/album?id=${albumId}`
+        `http://localhost:3000/api/albums?id=${albumId}`
       );
       const data = await response.json();
       setAlbum(data);
@@ -15,9 +15,11 @@ export default function FavoriteCard({ albumId, onToggleSave }) {
     fetchAlbum();
   }, [albumId]);
 
-  if (album === null) {
+  if (!album) {
     return null;
   }
+
+  console.log(album);
 
   return <AlbumCard {...album} isSaved={true} onToggleSave={onToggleSave} />;
 }
