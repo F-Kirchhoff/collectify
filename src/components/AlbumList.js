@@ -1,7 +1,12 @@
 import "./AlbumList.css";
 import AlbumCard from "./AlbumCard";
 
-export default function AlbumList({ list, title, onToggleSave }) {
+export default function AlbumList({
+  list,
+  title,
+  onToggleSave,
+  savedAlbumIds,
+}) {
   if (list.length === 0) {
     return (
       <>
@@ -17,7 +22,11 @@ export default function AlbumList({ list, title, onToggleSave }) {
       <ul className="album-list">
         {list.map((album) => (
           <li key={album.id}>
-            <AlbumCard {...album} onToggleSave={() => onToggleSave(album)} />
+            <AlbumCard
+              {...album}
+              onToggleSave={() => onToggleSave(album)}
+              isSaved={savedAlbumIds.includes(album.id)}
+            />
           </li>
         ))}
       </ul>

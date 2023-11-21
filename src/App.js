@@ -2,28 +2,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import AlbumList from "./components/AlbumList";
 import SearchForm from "./components/SearchForm";
+import FavoriteCard from "./components/FavoriteCard";
 
 function App() {
-  const [albumData, setAlbumData] = useState([]);
-  const [savedAlbumData, setSavedAlbumData] = useState([]);
+  const [albums, setAlbumData] = useState([]);
+  const [savedAlbumIds, setSavedAlbumData] = useState([]);
   const [query, setQuery] = useState("");
-
-  const albums = albumData.map((album) => {
-    const isSaved = savedAlbumData.some(
-      (savedAlbum) => savedAlbum.id === album.id
-    );
-    return {
-      ...album,
-      isSaved,
-    };
-  });
-
-  const savedAlbums = savedAlbumData.map((album) => {
-    return {
-      ...album,
-      isSaved: true,
-    };
-  });
 
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
@@ -41,13 +25,11 @@ function App() {
     }
   }
 
-  function handleToggleSave(album) {
-    if (album.isSaved) {
-      setSavedAlbumData(
-        savedAlbumData.filter((savedAlbum) => savedAlbum.id !== album.id)
-      );
+  function handleToggleSave(id) {
+    if (savedAlbumIds.includes(id)) {
+      setSavedAlbumData(savedAlbumIds.filter((savedId) => savedId !== id));
     } else {
-      setSavedAlbumData([album, ...savedAlbumData]);
+      setSavedAlbumData([id, ...savedAlbumIds]);
     }
   }
 
@@ -63,12 +45,15 @@ function App() {
         list={albums}
         title={query === "" ? "Featured" : `Results for: ${query}`}
         onToggleSave={handleToggleSave}
+        savedAlbumIds={savedAlbumIds}
       />
-      <AlbumList
-        list={savedAlbums}
-        title="Saved Albums"
-        onToggleSave={handleToggleSave}
-      />
+      {savedAlbumIds.map((id) => (
+        <FavoriteCard
+          key={id}
+          albumId={id}
+          onToggleSave={() => handleToggleSave(id)}
+        />
+      ))}
     </main>
   );
 }
