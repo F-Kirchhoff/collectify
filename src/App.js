@@ -7,7 +7,7 @@ import FavoriteCard from "./components/FavoriteCard";
 function App() {
   const [albums, setAlbums] = useState([]);
   const [savedAlbumIds, setSavedAlbumIds] = useState([]);
-  const [query, setQuery] = useState("");
+  const [listTitle, setListTitle] = useState("Featured");
 
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
@@ -19,7 +19,6 @@ function App() {
       const albums = await response.json();
 
       setAlbums(albums);
-      setQuery(query);
     } catch (error) {
       console.error(error);
     }
@@ -37,13 +36,14 @@ function App() {
     <main>
       <h1>Collectify</h1>
       <SearchForm
-        onSubmit={(query) =>
-          fetchAlbums(`http://localhost:3000/api/search?artist=${query}`)
-        }
+        onSubmit={(query) => {
+          fetchAlbums(`http://localhost:3000/api/search?artist=${query}`);
+          setListTitle(`Results for: ${query}`);
+        }}
       />
       <AlbumList
         list={albums}
-        title={query === "" ? "Featured" : `Results for: ${query}`}
+        title={listTitle}
         onToggleSave={handleToggleSave}
         savedAlbumIds={savedAlbumIds}
       />
