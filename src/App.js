@@ -5,11 +5,9 @@ import SearchForm from "./components/SearchForm";
 import FavoriteCard from "./components/FavoriteCard";
 
 function App() {
-  const [albums, setAlbumData] = useState([]);
-  const [savedAlbumIds, setSavedAlbumData] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [savedAlbumIds, setSavedAlbumIds] = useState([]);
   const [query, setQuery] = useState("");
-
-  console.log({ savedAlbumIds });
 
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
@@ -20,7 +18,7 @@ function App() {
       const response = await fetch(url);
       const albums = await response.json();
 
-      setAlbumData(albums);
+      setAlbums(albums);
       setQuery(query);
     } catch (error) {
       console.error(error);
@@ -29,9 +27,9 @@ function App() {
 
   function handleToggleSave(id) {
     if (savedAlbumIds.includes(id)) {
-      setSavedAlbumData(savedAlbumIds.filter((savedId) => savedId !== id));
+      setSavedAlbumIds(savedAlbumIds.filter((savedId) => savedId !== id));
     } else {
-      setSavedAlbumData([id, ...savedAlbumIds]);
+      setSavedAlbumIds([id, ...savedAlbumIds]);
     }
   }
 

@@ -19,7 +19,5 @@ export default function FavoriteCard({ albumId, onToggleSave }) {
     return null;
   }
 
-  console.log(album);
-
   return <AlbumCard {...album} isSaved={true} onToggleSave={onToggleSave} />;
 }
