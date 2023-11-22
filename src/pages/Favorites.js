@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import AlbumList from "../components/AlbumList";
-import useLocalStorageState from "use-local-storage-state";
 
 export default function Favorites({ savedAlbumIds, onToggleSave }) {
-  const [savedAlbums, setSavedAlbums] = useLocalStorageState([]);
+  const [savedAlbums, setSavedAlbums] = useState([]);
 
   useEffect(() => {
     getSavedAlbums();
