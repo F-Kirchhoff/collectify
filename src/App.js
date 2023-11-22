@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import AlbumList from "./components/AlbumList";
 import SearchForm from "./components/SearchForm";
-import FavoriteCard from "./components/FavoriteCard";
 
 function App() {
   const [albums, setAlbums] = useState([]);
+  const [savedAlbums, setSavedAlbums] = useState([]);
   const [savedAlbumIds, setSavedAlbumIds] = useState([]);
   const [listTitle, setListTitle] = useState("Featured");
 
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
   }, []);
+
+  useEffect(() => {
+    getSavedAlbums();
+  }, [savedAlbumIds]);
 
   async function fetchAlbums(url) {
     try {
@@ -22,6 +26,19 @@ function App() {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async function getSavedAlbums() {
+    if (savedAlbumIds.length === 0) {
+      setSavedAlbums([]);
+      return;
+    }
+
+    const response = await fetch(
+      `http://localhost:3000/api/albums?ids=${JSON.stringify(savedAlbumIds)}`
+    );
+    const receivedAlbums = await response.json();
+    setSavedAlbums(receivedAlbums);
   }
 
   function handleToggleSave(id) {
@@ -47,14 +64,12 @@ function App() {
         onToggleSave={handleToggleSave}
         savedAlbumIds={savedAlbumIds}
       />
-      <h2>Favorites</h2>
-      {savedAlbumIds.map((id) => (
-        <FavoriteCard
-          key={id}
-          albumId={id}
-          onToggleSave={() => handleToggleSave(id)}
-        />
-      ))}
+      <AlbumList
+        list={savedAlbums}
+        title={"Favorites"}
+        onToggleSave={handleToggleSave}
+        savedAlbumIds={savedAlbumIds}
+      />
     </main>
   );
 }
