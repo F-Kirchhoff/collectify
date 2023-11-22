@@ -3,8 +3,10 @@ import AlbumList from "../components/AlbumList";
 import SearchForm from "../components/SearchForm";
 
 export default function Home({ onToggleSave, savedAlbums }) {
-  const [listTitle, setListTitle] = useState("Featured");
+  const [pageState, setPageState] = useState("FEATURED");
+
   const [albumData, setAlbumData] = useState([]);
+
   const [query, setQuery] = useState("");
   const [offset, setOffset] = useState(0);
 
@@ -19,48 +21,44 @@ export default function Home({ onToggleSave, savedAlbums }) {
   });
 
   useEffect(() => {
-    async function fetchFeaturedAlbums() {
-      const albums = await fetchAlbums("http://localhost:3000/api/featured");
-      setAlbumData(albums);
-    }
-    fetchFeaturedAlbums();
-  }, []);
+    fetchAlbums(query, offset);
+  }, [query, offset]);
 
-  async function fetchAlbums(url) {
+  async function fetchAlbums(query, offset) {
+    const url =
+      pageState === "FEATURED"
+        ? "http://localhost:3000/api/featured"
+        : `http://localhost:3000/api/search?artist=${query}&offset=${offset}`;
+
     try {
       const response = await fetch(url);
       const albums = await response.json();
-      return albums;
+      setAlbumData([...albumData, ...albums]);
     } catch (error) {
       console.error(error);
     }
   }
 
   async function handleSearch(query) {
-    const albums = await fetchAlbums(
-      `http://localhost:3000/api/search?artist=${query}&offset=0`
-    );
-    setAlbumData(albums);
-    setQuery(query);
-    setListTitle(`Results for: ${query}`);
+    setPageState("SEARCHED");
+    setAlbumData([]);
     setOffset(0);
+    setQuery(query);
   }
 
   async function handleFetchMoreResults() {
-    const newOffset = offset + 20;
-    const nextAlbums = await fetchAlbums(
-      `http://localhost:3000/api/search?artist=${query}&offset=${newOffset}`
-    );
-    console.log(nextAlbums);
-    setAlbumData([...albumData, ...nextAlbums]);
-    setOffset(newOffset);
+    setOffset(offset + 20);
   }
 
   return (
     <>
       <SearchForm onSubmit={handleSearch} />
-      <AlbumList list={albums} title={listTitle} onToggleSave={onToggleSave} />
-      {query !== "" && (
+      <AlbumList
+        list={albums}
+        title={pageState === "FEATURED" ? "Featured" : `Results for: ${query}`}
+        onToggleSave={onToggleSave}
+      />
+      {pageState === "SEARCHED" && (
         <button className="button" onClick={handleFetchMoreResults}>
           more
         </button>
