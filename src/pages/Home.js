@@ -2,44 +2,45 @@ import { useEffect, useState } from "react";
 import AlbumList from "../components/AlbumList";
 import SearchForm from "../components/SearchForm";
 
-export default function Home({ onToggleSave, savedAlbums }) {
-  const [listTitle, setListTitle] = useState("Featured");
-  const [albumData, setAlbumData] = useState([]);
-
-  const albums = albumData.map((album) => {
-    const isSaved = savedAlbums.some(
-      (savedAlbum) => savedAlbum.id === album.id
-    );
-    return {
-      ...album,
-      isSaved,
-    };
-  });
+export default function Home({ savedAlbumIds, onToggleSave }) {
+  const [albums, setAlbums] = useState([]);
+  const [pageState, setPageState] = useState("FEATURED");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetchAlbums("http://localhost:3000/api/featured");
-  }, []);
+    fetchAlbums();
+  }, [query]);
 
-  async function fetchAlbums(url) {
+  async function fetchAlbums() {
+    const url =
+      pageState === "FEATURED"
+        ? "http://localhost:3000/api/featured"
+        : `http://localhost:3000/api/search?artist=${query}`;
+
     try {
       const response = await fetch(url);
       const albums = await response.json();
 
-      setAlbumData(albums);
+      setAlbums(albums);
     } catch (error) {
       console.error(error);
     }
   }
 
-  async function handleSearch(query) {
-    await fetchAlbums(`http://localhost:3000/api/search?artist=${query}`);
-    setListTitle(`Results for: ${query}`);
-  }
-
   return (
     <>
-      <SearchForm onSubmit={handleSearch} />
-      <AlbumList list={albums} title={listTitle} onToggleSave={onToggleSave} />
+      <SearchForm
+        onSubmit={(query) => {
+          setQuery(query);
+          setPageState("SEARCHED");
+        }}
+      />
+      <AlbumList
+        list={albums}
+        title={pageState === "FEATURED" ? "Featured" : `Results for: ${query}`}
+        onToggleSave={onToggleSave}
+        savedAlbumIds={savedAlbumIds}
+      />
     </>
   );
 }
