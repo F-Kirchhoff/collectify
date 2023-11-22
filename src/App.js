@@ -1,82 +1,76 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Home from "./pages/Home";
-import Favorites from "./pages/Favorites";
-import Navigation from "./components/Navigation";
+import AlbumList from "./components/AlbumList";
+import SearchForm from "./components/SearchForm";
 
 function App() {
-  console.clear();
-
-  const [currentPage, setCurrentPage] = useState("HOME");
-  const [albumData, setAlbumData] = useState([]);
-  const [savedAlbumData, setSavedAlbumData] = useState([]);
-  const [query, setQuery] = useState("");
-
-  const albums = albumData.map((album) => {
-    const isSaved = savedAlbumData.some(
-      (savedAlbum) => savedAlbum.id === album.id
-    );
-    return {
-      ...album,
-      isSaved,
-    };
-  });
-
-  const savedAlbums = savedAlbumData.map((album) => {
-    return {
-      ...album,
-      isSaved: true,
-    };
-  });
+  const [albums, setAlbums] = useState([]);
+  const [savedAlbums, setSavedAlbums] = useState([]);
+  const [savedAlbumIds, setSavedAlbumIds] = useState([]);
+  const [listTitle, setListTitle] = useState("Featured");
 
   useEffect(() => {
     fetchAlbums("http://localhost:3000/api/featured");
   }, []);
+
+  useEffect(() => {
+    getSavedAlbums();
+  }, [savedAlbumIds]);
 
   async function fetchAlbums(url) {
     try {
       const response = await fetch(url);
       const albums = await response.json();
 
-      setAlbumData(albums);
-      setQuery(query);
+      setAlbums(albums);
     } catch (error) {
       console.error(error);
     }
   }
 
-  function handleToggleSave(album) {
-    if (album.isSaved) {
-      setSavedAlbumData(
-        savedAlbumData.filter((savedAlbum) => savedAlbum.id !== album.id)
-      );
+  async function getSavedAlbums() {
+    if (savedAlbumIds.length === 0) {
+      setSavedAlbums([]);
+      return;
+    }
+
+    const response = await fetch(
+      `http://localhost:3000/api/albums?ids=${JSON.stringify(savedAlbumIds)}`
+    );
+    const receivedAlbums = await response.json();
+    setSavedAlbums(receivedAlbums);
+  }
+
+  function handleToggleSave(id) {
+    if (savedAlbumIds.includes(id)) {
+      setSavedAlbumIds(savedAlbumIds.filter((savedId) => savedId !== id));
     } else {
-      setSavedAlbumData([album, ...savedAlbumData]);
+      setSavedAlbumIds([id, ...savedAlbumIds]);
     }
   }
 
-  function handleSearch(query) {
-    fetchAlbums(`http://localhost:3000/api/search?artist=${query}`);
-  }
-
   return (
-    <>
+    <main>
       <h1>Collectify</h1>
-      <main className="main">
-        {currentPage === "HOME" && (
-          <Home
-            albums={albums}
-            query={query}
-            onToggleSave={handleToggleSave}
-            onSearch={handleSearch}
-          />
-        )}
-        {currentPage === "FAVORITES" && (
-          <Favorites albums={savedAlbums} onToggleSave={handleToggleSave} />
-        )}
-      </main>
-      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-    </>
+      <SearchForm
+        onSubmit={(query) => {
+          fetchAlbums(`http://localhost:3000/api/search?artist=${query}`);
+          setListTitle(`Results for: ${query}`);
+        }}
+      />
+      <AlbumList
+        list={albums}
+        title={listTitle}
+        onToggleSave={handleToggleSave}
+        savedAlbumIds={savedAlbumIds}
+      />
+      <AlbumList
+        list={savedAlbums}
+        title={"Favorites"}
+        onToggleSave={handleToggleSave}
+        savedAlbumIds={savedAlbumIds}
+      />
+    </main>
   );
 }
 
