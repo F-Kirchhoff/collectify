@@ -2,23 +2,13 @@ import { useEffect, useState } from "react";
 import AlbumList from "../components/AlbumList";
 import SearchForm from "../components/SearchForm";
 
-export default function Home({ onToggleSave, savedAlbums }) {
+export default function Home({ onToggleSave, savedAlbumIds }) {
   const [pageState, setPageState] = useState("FEATURED");
 
-  const [albumData, setAlbumData] = useState([]);
+  const [albums, setAlbums] = useState([]);
 
   const [query, setQuery] = useState("");
   const [offset, setOffset] = useState(0);
-
-  const albums = albumData.map((album) => {
-    const isSaved = savedAlbums.some(
-      (savedAlbum) => savedAlbum.id === album.id
-    );
-    return {
-      ...album,
-      isSaved,
-    };
-  });
 
   useEffect(() => {
     fetchAlbums(query, offset);
@@ -32,8 +22,8 @@ export default function Home({ onToggleSave, savedAlbums }) {
 
     try {
       const response = await fetch(url);
-      const albums = await response.json();
-      setAlbumData([...albumData, ...albums]);
+      const nextAlbums = await response.json();
+      setAlbums([...albums, ...nextAlbums]);
     } catch (error) {
       console.error(error);
     }
@@ -41,7 +31,7 @@ export default function Home({ onToggleSave, savedAlbums }) {
 
   async function handleSearch(query) {
     setPageState("SEARCHED");
-    setAlbumData([]);
+    setAlbums([]);
     setOffset(0);
     setQuery(query);
   }
@@ -57,6 +47,7 @@ export default function Home({ onToggleSave, savedAlbums }) {
         list={albums}
         title={pageState === "FEATURED" ? "Featured" : `Results for: ${query}`}
         onToggleSave={onToggleSave}
+        savedAlbumIds={savedAlbumIds}
       />
       {pageState === "SEARCHED" && (
         <button className="button" onClick={handleFetchMoreResults}>

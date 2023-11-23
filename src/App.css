@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 0.5rem;
   padding-block: 1rem;
+  align-items: stretch;
 }
 
 .button {
