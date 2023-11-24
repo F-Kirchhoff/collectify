@@ -9,6 +9,8 @@ export default function AlbumCard({
   tracks,
   isSaved,
   onToggleSave,
+  favoriteSongIds,
+  onToggleLikeSong,
 }) {
   const [showSonglist, setShowSonglist] = useState(false);
   return (
@@ -37,7 +39,13 @@ export default function AlbumCard({
         <h2>{title}</h2>
         <small>{artist}</small>
       </button>
-      {showSonglist && <SongList songs={tracks} />}
+      {showSonglist && (
+        <SongList
+          songs={tracks}
+          favoriteSongIds={favoriteSongIds}
+          onToggleLikeSong={onToggleLikeSong}
+        />
+      )}
     </section>
   );
 }

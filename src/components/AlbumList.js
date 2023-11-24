@@ -6,6 +6,8 @@ export default function AlbumList({
   title,
   onToggleSave,
   savedAlbumIds,
+  favoriteSongIds,
+  onToggleLikeSong,
 }) {
   if (list.length === 0) {
     return (
@@ -26,6 +28,8 @@ export default function AlbumList({
               {...album}
               onToggleSave={() => onToggleSave(album.id)}
               isSaved={savedAlbumIds.includes(album.id)}
+              onToggleLikeSong={onToggleLikeSong}
+              favoriteSongIds={favoriteSongIds}
             />
           </li>
         ))}

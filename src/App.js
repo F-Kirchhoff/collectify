@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Navigation from "./components/Navigation";
 import useLocalStorageState from "use-local-storage-state";
+import FavoriteSongs from "./pages/FavoriteSongs";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("HOME");
@@ -12,6 +13,19 @@ function App() {
     "saved-album-ids",
     { defaultValue: [] }
   );
+
+  const [favoriteSongIds, setFavoriteSongIds] = useLocalStorageState(
+    "favorite-song-ids",
+    { defaultValue: [] }
+  );
+
+  function handleToggleLikeSong(id) {
+    if (favoriteSongIds.includes(id)) {
+      setFavoriteSongIds(favoriteSongIds.filter((savedId) => savedId !== id));
+    } else {
+      setFavoriteSongIds([id, ...favoriteSongIds]);
+    }
+  }
 
   function handleToggleSave(id) {
     if (savedAlbumIds.includes(id)) {
@@ -26,12 +40,25 @@ function App() {
       <h1>Collectify</h1>
       <main className="main">
         {currentPage === "HOME" && (
-          <Home savedAlbumIds={savedAlbumIds} onToggleSave={handleToggleSave} />
+          <Home
+            savedAlbumIds={savedAlbumIds}
+            favoriteSongIds={favoriteSongIds}
+            onToggleSave={handleToggleSave}
+            onToggleLikeSong={handleToggleLikeSong}
+          />
         )}
         {currentPage === "FAVORITES" && (
           <Favorites
             savedAlbumIds={savedAlbumIds}
+            favoriteSongIds={favoriteSongIds}
             onToggleSave={handleToggleSave}
+            onToggleLikeSong={handleToggleLikeSong}
+          />
+        )}
+        {currentPage === "SONGS" && (
+          <FavoriteSongs
+            favoriteSongIds={favoriteSongIds}
+            onToggleLikeSong={handleToggleLikeSong}
           />
         )}
       </main>

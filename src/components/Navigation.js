@@ -17,7 +17,15 @@ export default function Navigation({ currentPage, setCurrentPage }) {
         }`}
         onClick={() => setCurrentPage("FAVORITES")}
       >
-        Saved
+        Albums
+      </button>
+      <button
+        className={`navigation__button ${
+          currentPage === "SONGS" ? "navigation__button--active" : ""
+        }`}
+        onClick={() => setCurrentPage("SONGS")}
+      >
+        Songs
       </button>
     </nav>
   );

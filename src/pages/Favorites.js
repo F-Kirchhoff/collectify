@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import AlbumList from "../components/AlbumList";
 
-export default function Favorites({ savedAlbumIds, onToggleSave }) {
+export default function Favorites({
+  savedAlbumIds,
+  onToggleSave,
+  onToggleLikeSong,
+  favoriteSongIds,
+}) {
   const [savedAlbums, setSavedAlbums] = useState([]);
 
   useEffect(() => {
@@ -25,7 +30,9 @@ export default function Favorites({ savedAlbumIds, onToggleSave }) {
       list={savedAlbums}
       title={"Favorites"}
       onToggleSave={onToggleSave}
+      onToggleLikeSong={onToggleLikeSong}
       savedAlbumIds={savedAlbumIds}
+      favoriteSongIds={favoriteSongIds}
     />
   );
 }

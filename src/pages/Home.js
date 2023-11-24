@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import AlbumList from "../components/AlbumList";
 import SearchForm from "../components/SearchForm";
 
-export default function Home({ onToggleSave, savedAlbumIds }) {
+export default function Home({
+  onToggleSave,
+  savedAlbumIds,
+  onToggleLikeSong,
+  favoriteSongIds,
+}) {
   const [pageState, setPageState] = useState("FEATURED");
 
   const [albums, setAlbums] = useState([]);
@@ -48,6 +53,8 @@ export default function Home({ onToggleSave, savedAlbumIds }) {
         title={pageState === "FEATURED" ? "Featured" : `Results for: ${query}`}
         onToggleSave={onToggleSave}
         savedAlbumIds={savedAlbumIds}
+        onToggleLikeSong={onToggleLikeSong}
+        favoriteSongIds={favoriteSongIds}
       />
       {pageState === "SEARCHED" && (
         <button className="button" onClick={handleFetchMoreResults}>
